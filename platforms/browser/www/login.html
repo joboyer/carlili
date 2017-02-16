@@ -1,0 +1,20 @@
+    <ons-template id="login.html">
+    <ons-page>
+  <ons-toolbar>
+    <div class="center">Carlili</div>
+  </ons-toolbar>
+<div ng-controller="controllereqsql">
+  <div style="text-align: center; margin-top: 30px;">
+    <p>
+      <ons-input id="username" modifier="underbar" placeholder="Username" float ng-model="navi.username"></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float ng-model="navi.password"></ons-input>
+    </p>
+    <p style="margin-top: 30px;">
+      <ons-button ng-click="login();">Sign in</ons-button>
+    </p>
+  </div>
+        </div>
+            </ons-page>
+</ons-template>

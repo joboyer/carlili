@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissi and limitations
+    under the License.
+-->
+<html lang="fr" ng-app="my-app" >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        
+    <link href="lib/onsen/c3/c3.css" rel="stylesheet" type="text/css">
+    	<script src="lib/onsen/c3/d3.v3.min.js" charset="utf-8"></script>
+    	<script src="lib/onsen/c3/c3.min.js"></script>
+	<script src="lib/onsen/js/angular/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="lib/onsen/js/onsenui.js"></script>
+    <script src="lib/onsen/js/angular-onsenui.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <link rel="stylesheet" href="lib/onsen/css/onsenu.css"/>
+        <link rel="stylesheet" href="lib/onsen/css/onsenui-joki.css"/>
+        <title>Carlili</title>
+    <script  data-require="angular-google-maps@*" data-semver="1.1.4" src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqPPKPXt3uwGi6CWe015_M8Zs80pawjtk&signed_in=true"
+                async defer></script>
+	<script src="lib/ng-cordova-master/dist/ng-cordova.js"></script>
+       <link rel="stylesheet" href="lib/font/styles.css"/> 
+    </head>
+    <body ng-controller="initController">
+        <ons-navigator var="myNavigator" id="navigator"
+                       
+                    page="login.html"
+                       animation="fade">
+</ons-navigator>
+
+	<ons-template id="login.html">
+    <ons-page id="jojosty">
+  <ons-toolbar>
+    <div class="center text-hide"><img src="./img/carlili_logo.png" class="img-responsive" alt="Responsive image"></div>
+  </ons-toolbar>
+        <div ng-controller="sqlController">
+  <div style="text-align: center; margin-top: 30px;">
+    <p>
+      <ons-input id="username" style="color: white;" modifier="underbar" placeholder="Username" float ng-model="navi.username"></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float ng-model="navi.password"></ons-input>
+    </p>
+    <p style="margin-top: 30px;">
+        <span id="message" style="color: white;">{{message}}</span>
+      <ons-button ng-click="log(navi.username, navi.password);">Sign in</ons-button>
+    </p>
+            </div></div>
+            </ons-page>
+</ons-template>
+
+	<ons-template id="home.html">
+            <ons-splitter>
+  <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+    <ons-page>
+      <ons-list>
+        <ons-list-item onclick="fn.load('home.html')" tappable>
+          Start info
+        </ons-list-item>
+        <ons-list-item onclick="fn.load('about.html')" tappable>
+          Emergency
+       </ons-list-item>
+      </ons-list>
+    </ons-page>
+  </ons-splitter-side>
+  <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+</ons-splitter>
+
+<ons-template id="home.html">
+  <ons-page>
+	
+<ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+    <div class="center text-hide"><img src="./img/carlili_logo.png" class="img-responsive" alt="Responsive image"></div>
+
+    </ons-toolbar>
+
+
+      <div ng-controller="homeController">
+
+        <div  ng-init="charto($done)"></div>
+<BR/>
+      <ons-pull-hook ng-action="charto($done)" var="loader">
+    <span ng-switch="loader.state">
+      <span ng-switch-when="initial" style="color: white;"><ons-icon size="35px" icon="ion-arrow-down-a" style="color: white;"></ons-icon> Pull down to refresh</span>
+      <span ng-switch-when="preaction" style="color: white;"><ons-icon size="35px" icon="ion-arrow-up-a" style="color: white;"></ons-icon> Release to refresh</span>
+      <span ng-switch-when="action" style="color: white;"><ons-icon size="35px" spin="true" icon="ion-load-d" style="color: white;"></ons-icon> Loading data...</span>
+    </span>
+  </ons-pull-hook>
+ <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+        <ons-progress-bar value="{{pref.v}}"></ons-progress-bar>
+     </p>
+
+        <div id="sty">
+<BR/>
+        <img id="pic" src="https://api.mpsa.com/api/dev/1.0/vehicle/picture/myvin/mycontrat?client_id=1403d835-a9aa-4d50-8757-b590f364b90b"  height="40%" width="100%">
+<div id="chart">Fuel Level</div>
+</BR>
+</BR>
+</BR>
+</BR>
+	<ons-button id="rif" style="float: right; color: white; background-color: #ff5a5f; margin-right: 7%;" ng-click="myNavigator.pushPage('Refill.html')">Refill</ons-button>
+</BR>
+</BR>
+</BR>
+	<ons-list><ons-list-item ng-repeat="item in items" style="color: red;">{{ item.name }}</ons-list-item></ons-list>	
+</BR>
+	<ons-list modifier="inset">
+    <ons-list-header>{{pref.statrent}}</ons-list-header>
+	<div class="left">
+    <ons-list-item modifier="nodivider">{{datemsg}}</ons-list-item>
+    <ons-list-item modifier="nodivider">{{timemsg}}</ons-list-item>
+    <ons-list-item modifier="nodivider">{{at}}</ons-list-item>
+    <ons-list-item modifier="nodivider">{{city}}</ons-list-item>
+	</div>
+	<div class="right">
+		<span id="calli" class="list__item__subtitle"><a href="tel:0783645892" class="button button-positive"><ons-button style="background-color: #ff5a5f; color: white;">Change</ons-button></a></span>
+	</div>    
+</BR>
+	<ons-list-item id="warn" modifier="longdivider" style="visibility: hidden; display: none; color: red;"><ons-toolbar-button ng-click="myNavigator.pushPage('forfait.html')">{{ warning }}</ons-toolbar-button></ons-list-item>
+  </ons-list>
+	</BR>
+	<ons-list modifier="inset">
+<ons-list-header id="carsi">My Carsitter</ons-list-header>
+	<ons-list-item modifier="longdivider" id="carsi">
+      <div class="left">
+      	<img id="tof" class="list__item__thumbnail" src="https://scontent.xx.fbcdn.net/v/t31.0-8/858783_10151490645089189_182856048_o.jpg?oh=803eb4644ab1e4cef61597229819a846&oe=594A3AEE">
+      </div>
+      <div class="center">
+        <span class="list__item__title">{{carsi.name}}</span><span class="list__item__subtitle">Boyer</span>
+      </div>
+	<div class="right" style="height: 100%; width: 25%;">
+	 <span id="calli" class="list__item__subtitle" style="height: 100%; width: 100%;"><a href="tel:{{ carsi.num }}" class="button button-positive" style="height: 100%; width: 100%;"><img src="http://www.icone-png.com/png/32/31957.png" width="100%" height="100%"></img></a></span>
+	</div>    
+	</ons-list-item>
+	</ons-list>
+</BR>
+<div id="carsi" class="fade right" style="float: right; visibility: hidden;"><ons-toolbar-button ng-click="popover.show($event)">Your Carsitter</ons-toolbar-button></div>
+            </div>
+      		<div id="map">
+		</div>
+	<BR/>
+	<BR/>
+	<BR/>
+	<BR/>
+	<BR/>
+	</div>
+	<ons-popover direction="left" var="popover">
+	<div style="padding: 10px; text-align: center;">
+		<p>
+			Votre Carsitter: {{carsi.name}}
+		</p>
+		<p>
+			tel : {{carsi.num}}
+		</p>
+		<p>
+			<ons-button ng-click="popover.hide()">Close</ons-button>
+		</p>
+	</div>
+	</ons-popover>
+  </ons-page>
+</ons-template>
+
+<ons-template id="about.html">
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Emergency
+      </div>
+    </ons-toolbar>
+	<ons-row style="margin-top: 50px; text-align: center;" >
+              <ons-col>
+      <ons-button class="button">My Car is accidented</ons-button>
+      <BR/>
+      <BR/>
+      <ons-button class="button">My Car has been robbed</ons-button>
+	</ons-col>
+	</ons-row>
+  </ons-page>
+</ons-template>
+	
+	<ons-template id="Refill.html">
+		<ons-page>
+			<ons-toolbar>
+				<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center text-hide"><img src="./img/carlili_logo.png" class="img-responsive" alt="Responsive image"></div>
+			</ons-toolbar>
+      <BR/>
+      <BR/>
+		<div id="sty">
+      <BR/>
+	<ons-list modifier="inset">
+		<ons-list-header>Are you returning your car ?</ons-list-header>
+		<ons-list-item modifier="nodivider">You should fill :</ons-list-item>	
+		<ons-list-item modifier="nodivider"><h1 style="font-size: 30px; color: #ff5a5f;"> {{pref.plein}} L - Diesel</h1></ons-list-item>
+		<ons-list-item modifier="nodivider">to match the quantity at departure</ons-list-item>
+		<ons-list-item modifier="longdivider">Estimated price : {{pref.pri}} €</ons-list-item>
+		<ons-list-item modifier="longdivider">My Carsitter refills for {{pref.prifill}} €<div class="right"><ons-switch></ons-switch></div></ons-list-item>
+	</ons-list>	
+      <BR/>
+</div>
+		</ons-page>
+	</ons-template>
+	<ons-template id="forfait.html">
+		<ons-page>
+
+			<ons-toolbar>
+				<div class="left"><ons-back-button>Back</ons-back-button></div>
+				<div class="center text-hide"><img src="./img/carlili_logo.png" class="img-responsive" alt="Responsive image"></div>
+			</ons-toolbar>
+      <BR/>
+      <BR/>
+			<div id="sty">
+      <BR/>
+			<ons-list modifier="inset">
+				<ons-list-header>{{pref.consmsg}}</ons-list-header>
+				<ons-list-item modifier="nodivider">{{pref.cons}}</ons-list-item>
+			</ons-list>
+      <BR/>
+			</div>
+		</ons-page>
+	
+	</ons-template>
+        </ons-template>        
+        <script type="text/javascript" src="js/japp.js"></script>
+    </body>
+</html>

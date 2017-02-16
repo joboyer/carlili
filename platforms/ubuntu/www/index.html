@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html lang="fr" ng-app="my-app" >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+        
+        <!--<link rel="stylesheet" href="styles/onsen-css-components-sunshine-theme.css">-->
+    	<!--<link rel="stylesheet" href="styles/app.css"/>-->
+       <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+
+        <script src="lib/onsen/c3/d3.v3.min.js" charset="utf-8"></script>
+    	<script src="lib/onsen/c3/c3.min.js"></script>
+    <script src="lib/onsen/js/angular/angular.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <!--<script src="lib/onsen/js/angular/angular-animate.js"></script>-->
+    <script src="lib/onsen/js/onsenui.js"></script>
+    <script src="lib/onsen/js/angular-onsenui.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="lib/onsen/css/onsenui.css"/>
+        <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css"/>
+        <title>Carlili</title>
+    <script  data-require="angular-google-maps@*" data-semver="1.1.4" src='bower_components/angular-google-maps/dist/angular-google-maps.min.js'></script>
+        
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqPPKPXt3uwGi6CWe015_M8Zs80pawjtk&signed_in=true"
+                async defer></script>
+        
+    </head>
+    <body ng-controller="initController">
+        <ons-navigator
+                       
+                    page="login.html">
+</ons-navigator>
+        
+        <ons-template id="login.html">
+    <ons-page>
+  <ons-toolbar>
+    <div class="center">Carlili</div>
+  </ons-toolbar>
+        <div ng-controller="sqlController">
+  <div style="text-align: center; margin-top: 30px;">
+    <p>
+      <ons-input id="username" modifier="underbar" placeholder="Username" float ng-model="navi.username"></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float ng-model="navi.password"></ons-input>
+    </p>
+    <p style="margin-top: 30px;">
+        <span id="message">{{message}}</span>
+      <ons-button ng-click="log(navi.username, navi.password);">Sign in</ons-button>
+    </p>
+            </div></div>
+            </ons-page>
+</ons-template>
+        <ons-template id="home.html">
+            <ons-splitter>
+  <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+    <ons-page>
+      <ons-list>
+        <ons-list-item onclick="fn.load('home.html')" tappable>
+          Start info
+        </ons-list-item>
+        <ons-list-item onclick="fn.load('settings.html')" tappable>
+          Status
+        </ons-list-item>
+        <ons-list-item onclick="fn.load('about.html')" tappable>
+          Incident
+        </ons-list-item>
+          <ons-list-item onclick="fn.load('retour.html')" tappable>
+          Back
+        </ons-list-item>
+      </ons-list>
+    </ons-page>
+  </ons-splitter-side>
+  <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+</ons-splitter>
+
+<ons-template id="home.html">
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"> Menu</ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Carlili
+      </div>
+
+    </ons-toolbar>
+      <ons-pull-hook id="pull-hook">
+        Pull to refresh
+        </ons-pull-hook>
+    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+    </p>
+      
+        <div id="sty">
+        <img id="pic" src="https://api.mpsa.com/api/dev/1.0/vehicle/picture/myvin/mycontrat?client_id=1403d835-a9aa-4d50-8757-b590f364b90b"  height="40%" width="70%">
+            <ons-button ng-click="charto();">chart</ons-button>
+        <div id="chart">fuel level</div>
+            <div id="compteur">42666km</div>
+            <table id="alert" style="visibility: collapse;">
+        <tr>
+            <td>From</td>
+            <td>Alert</td>
+        </tr>
+    </table>
+    </div>
+  </ons-page>
+</ons-template>
+
+<ons-template id="settings.html">
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Status
+      </div>
+    </ons-toolbar>
+      <ons-button ng-click="charto();">chart</ons-button>
+        <div id="chart">fuel level</div>
+  </ons-page>
+</ons-template>
+
+<ons-template id="about.html">
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        About
+      </div>
+    </ons-toolbar>
+      <ons-button class="button">ACCIDENT</ons-button>
+      <BR/>
+      <BR/>
+      <ons-button class="button">VOL</ons-button>
+  </ons-page>
+</ons-template>
+        </ons-template>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
